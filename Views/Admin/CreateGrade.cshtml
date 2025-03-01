@@ -1,0 +1,58 @@
+﻿@model SchoolManagementSystem.Models.Grade
+
+<div class="container my-4">
+    <h2>Add Grade</h2>
+    <form asp-action="CreateGrade" method="post">
+        <input type="hidden" asp-for="StudentId" value="@ViewBag.StudentId" />
+
+        <div class="form-group mb-3">
+            <label asp-for="Subject"></label>
+            <input asp-for="Subject" class="form-control" required />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="SubjectType"></label>
+            <select asp-for="SubjectType" class="form-select">
+                @foreach (var type in Enum.GetValues(typeof(SubjectType)))
+                {
+                    <option value="@type">@type</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Quarter1"></label>
+            <input asp-for="Quarter1" class="form-control" type="number" step="0.01" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Quarter2"></label>
+            <input asp-for="Quarter2" class="form-control" type="number" step="0.01" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Quarter3"></label>
+            <input asp-for="Quarter3" class="form-control" type="number" step="0.01" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Quarter4"></label>
+            <input asp-for="Quarter4" class="form-control" type="number" step="0.01" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Teacher</label>
+            <select asp-for="TeacherId" class="form-select">
+                <option value="">No Teacher</option>
+                @foreach (var teacher in ViewBag.Teachers)
+                {
+                    var teacherName = teacher.User != null ? $"{teacher.User.FirstName} {teacher.User.LastName}" : "Unknown Teacher";
+                    <option value="@teacher.Id">@teacherName</option>
+                }
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+        <a asp-action="Grades" asp-route-studentId="@ViewBag.StudentId" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

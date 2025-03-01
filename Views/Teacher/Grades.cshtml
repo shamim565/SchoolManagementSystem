@@ -1,0 +1,71 @@
+﻿@model IEnumerable<SchoolManagementSystem.Models.Grade>
+
+@{
+    ViewData["Title"] = "Manage Grades";
+    var studentId = ViewBag.StudentId;
+}
+
+<div class="container my-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="m-0">Manage Grades</h2>
+        </div>
+
+        <div class="card-body">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <div class="table-responsive">
+                <table class="table table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Subject</th>
+                            <th>Subject Type</th>
+                            <th>Quarter 1</th>
+                            <th>Quarter 2</th>
+                            <th>1st Sem Final</th>
+                            <th>Quarter 3</th>
+                            <th>Quarter 4</th>
+                            <th>2nd Sem Final</th>
+                            <th>Teacher</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var grade in Model)
+                        {
+                            var firstSemFinal = (grade.Quarter1 + grade.Quarter2) / 2.0;
+                            var secondSemFinal = (grade.Quarter3 + grade.Quarter4) / 2.0;
+
+                            <tr>
+                                <td>@grade.Subject</td>
+                                <td>@grade.SubjectType</td>
+                                <td>@grade.Quarter1</td>
+                                <td>@grade.Quarter2</td>
+                                <td class="text-success fw-bold">@firstSemFinal.ToString()</td>
+                                <td>@grade.Quarter3</td>
+                                <td>@grade.Quarter4</td>
+                                <td class="text-success fw-bold">@secondSemFinal.ToString()</td>
+                                <td>@(grade.Teacher?.User != null ? $"{grade.Teacher.User.FirstName} {grade.Teacher.User.LastName}" : "Unknown")</td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a asp-action="EditGrade" asp-route-id="@grade.Id" class="btn btn-sm btn-outline-primary">✏️ Edit</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <a asp-action="Index" class="btn btn-secondary">🏠 Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>

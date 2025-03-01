@@ -1,0 +1,78 @@
+﻿@model SchoolManagementSystem.Models.Student
+
+<div class="container my-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+            <h2 class="m-0">Student Dashboard</h2>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <!-- Left Column: Student Information -->
+                <div class="col-md-5">
+                    <div class="card shadow-sm p-3 mb-4">
+                        <h4 class="text-primary">👨‍🎓 Student Information</h4>
+                        <hr>
+                        <p><strong>📌 Name:</strong> @Model.User.FirstName @Model.User.LastName</p>
+                        <p><strong>📧 Email:</strong> @Model.User.Email</p>
+                        <p><strong>🎂 Date of Birth:</strong> @Model.User.DOB.ToString("MMMM dd, yyyy")</p>
+                        <p><strong>📌 LRN:</strong> @Model.LRN</p>
+                        <p><strong>📚 Grade Level:</strong> @Model.Grade</p>
+                        <p><strong>📅 School Year:</strong> @Model.Year</p>
+                        <p><strong>🎯 Track/Strand:</strong> @Model.Track</p>
+                        <p><strong>🏫 Section:</strong> @Model.Section</p>
+                    </div>
+                </div>
+
+                <!-- Right Column: Grades Table -->
+                <div class="col-md-7">
+                    <div class="card shadow-sm p-3">
+                        <h4 class="text-primary">📊 Your Grades</h4>
+                        <hr>
+                        @if (Model.Grades != null && Model.Grades.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-striped align-middle">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Subject</th>
+                                            <th>Q1</th>
+                                            <th>Q2</th>
+                                            <th>1st Sem</th>
+                                            <th>Q3</th>
+                                            <th>Q4</th>
+                                            <th>2nd Sem</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var grade in Model.Grades)
+                                        {
+                                            <tr>
+                                                <td>@grade.Subject</td>
+                                                <td>@grade.Quarter1</td>
+                                                <td>@grade.Quarter2</td>
+                                                <td class="fw-bold bg-light">@((grade.Quarter1 + grade.Quarter2) / 2.0)</td>
+                                                <td>@grade.Quarter3</td>
+                                                <td>@grade.Quarter4</td>
+                                                <td class="fw-bold bg-light">@((grade.Quarter3 + grade.Quarter4) / 2.0)</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">📌 No grades available yet.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logout Button -->
+            <div class="text-center mt-4">
+                <a asp-controller="User" asp-action="Logout" class="btn btn-danger px-4 py-2 fw-bold">🚪 Logout</a>
+            </div>
+        </div>
+    </div>
+</div>

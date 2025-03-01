@@ -1,0 +1,123 @@
+﻿@model SchoolManagementSystem.Models.Teacher
+
+<div class="container my-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="m-0">Add Teacher</h2>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="CreateTeacher" method="post">
+                <div class="row g-3">
+                    <!-- User Fields -->
+                    <div class="col-md-6">
+                        <label asp-for="User.Email" class="form-label fw-bold"></label>
+                        <input asp-for="User.Email" type="email" class="form-control border-primary" />
+                        <span asp-validation-for="User.Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="User.Password" class="form-label fw-bold"></label>
+                        <input asp-for="User.Password" type="password" class="form-control border-primary" />
+                        <span asp-validation-for="User.Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="ConfirmPassword" class="form-label fw-bold">Confirm Password</label>
+                        <input id="ConfirmPassword" type="password" class="form-control border-primary" />
+                        <span id="ConfirmPasswordError" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="User.FirstName" class="form-label fw-bold"></label>
+                        <input asp-for="User.FirstName" class="form-control border-primary" />
+                        <span asp-validation-for="User.FirstName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="User.LastName" class="form-label fw-bold"></label>
+                        <input asp-for="User.LastName" class="form-control border-primary" />
+                        <span asp-validation-for="User.LastName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="User.MiddleName" class="form-label fw-bold"></label>
+                        <input asp-for="User.MiddleName" class="form-control border-primary" />
+                        <span asp-validation-for="User.MiddleName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="User.Sex" class="form-label fw-bold"></label>
+                        <select asp-for="User.Sex" class="form-select border-primary">
+                            <option value="">Select sex</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                        <span asp-validation-for="User.Sex" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="User.DOB" class="form-label fw-bold"></label>
+                        <input asp-for="User.DOB" type="date" class="form-control border-primary" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="User.DOB" class="text-danger"></span>
+                    </div>
+
+                    <!-- Teacher Fields -->
+                    <div class="col-md-6">
+                        <label asp-for="Position" class="form-label fw-bold"></label>
+                        <input asp-for="Position" class="form-control border-primary" />
+                        <span asp-validation-for="Position" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="AdvisoryClass" class="form-label fw-bold"></label>
+                        <input asp-for="AdvisoryClass" class="form-control border-primary" />
+                        <span asp-validation-for="AdvisoryClass" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label asp-for="SubjectsSpecialization" class="form-label fw-bold"></label>
+                        <input asp-for="SubjectsSpecialization" class="form-control border-primary" />
+                        <span asp-validation-for="SubjectsSpecialization" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Display general errors -->
+                <div asp-validation-summary="ModelOnly" class="text-danger mt-3"></div>
+
+                <!-- Form Buttons -->
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-success px-4">✅ Save</button>
+                    <a asp-action="Teachers" class="btn btn-secondary px-4">❌ Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const passwordField = document.querySelector('input[name="User.Password"]');
+            const confirmPasswordField = document.getElementById('ConfirmPassword');
+            const errorElement = document.getElementById('ConfirmPasswordError');
+
+            confirmPasswordField.addEventListener('input', function () {
+                // Check if passwords match
+                if (passwordField.value !== confirmPasswordField.value) {
+                    errorElement.textContent = 'Passwords do not match.';
+                } else {
+                    errorElement.textContent = '';
+                }
+            });
+
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function (e) {
+                if (passwordField.value !== confirmPasswordField.value) {
+                    e.preventDefault(); // Prevent form submission if passwords don't match
+                    errorElement.textContent = 'Passwords do not match.';
+                }
+            });
+        });
+    </script>
+}

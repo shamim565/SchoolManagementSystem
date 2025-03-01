@@ -1,0 +1,71 @@
+﻿@model List<SchoolManagementSystem.Models.Teacher>
+
+<div class="container my-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="m-0">Manage Teachers</h2>
+            <a asp-action="CreateTeacher" class="btn btn-light text-primary fw-bold">➕ Add New Teacher</a>
+        </div>
+
+        <div class="card-body">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <div class="table-responsive">
+                <table class="table table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Sex</th>
+                            <th>DOB</th>
+                            <th>Email</th>
+                            <th>Position</th>
+                            <th>Advisory Class</th>
+                            <th>Specialization</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var teacher in Model)
+                        {
+                            <tr>
+                                <td>@teacher.User.FirstName @teacher.User.LastName</td>
+                                <td>@teacher.User.Sex</td>
+                                <td>@teacher.User.DOB.ToString("MM-dd-yyyy")</td>
+                                <td>@teacher.User.Email</td>
+                                <td>@teacher.Position</td>
+                                <td>@teacher.AdvisoryClass</td>
+                                <td>@teacher.SubjectsSpecialization</td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a asp-action="EditTeacher" asp-route-id="@teacher.Id" class="btn btn-sm btn-outline-primary">
+                                            ✏️ Edit
+                                        </a>
+                                        <form asp-action="DeleteTeacher" asp-route-id="@teacher.Id" method="post" onsubmit="return confirmDelete('@teacher.User.FirstName @teacher.User.LastName');">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">🗑️ Delete</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <a asp-action="Index" class="btn btn-secondary">🏠 Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(teacherName) {
+        return confirm(`Are you sure you want to delete ${teacherName}?`);
+    }
+</script>

@@ -1,0 +1,41 @@
+﻿@model SchoolManagementSystem.Models.Teacher
+
+<div class="container my-4">
+    <h2>Edit Teacher</h2>
+    <form asp-action="EditTeacher" method="post">
+        <input asp-for="Id" type="hidden" />
+        <div class="form-group mb-3">
+            <label>First Name</label>
+            <input name="firstName" value="@Model.User.FirstName" class="form-control" required />
+        </div>
+        <div class="form-group mb-3">
+            <label>Last Name</label>
+            <input name="lastName" value="@Model.User.LastName" class="form-control" required />
+        </div>
+        <div class="form-group mb-3">
+            <label>Middle Name</label>
+            <input name="middleName" value="@Model.User.MiddleName" class="form-control" />
+        </div>
+        <div class="form-group mb-3">
+            <label>Sex</label>
+            <select name="sex" class="form-select" required>
+                <option value="Male" selected="@(Model.User.Sex == "Male")">Male</option>
+                <option value="Female" selected="@(Model.User.Sex == "Female")">Female</option>
+            </select>
+        </div>
+        <div class="form-group mb-3">
+            <label>Date of Birth</label>
+            <input name="dob" value="@Model.User.DOB.ToString()" type="date" class="form-control" required />
+        </div>
+        <div class="form-group mb-3">
+            <label>Email</label>
+            <input name="email" value="@Model.User.Email" type="email" class="form-control" />
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="SubjectsSpecialization"></label>
+            <input asp-for="SubjectsSpecialization" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-success">Save</button>
+        <a asp-action="Teachers" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

@@ -1,0 +1,94 @@
+﻿@model List<SchoolManagementSystem.Models.Student>
+
+<div class="container my-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="m-0">Manage Students</h2>
+            <a asp-action="CreateStudent" class="btn btn-light text-primary fw-bold">➕ Add New Student</a>
+        </div>
+
+        <div class="card-body">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <!-- Search Form -->
+            <form method="get" asp-action="Students" class="mb-3 d-flex gap-2">
+                <input type="text" name="searchTerm" class="form-control" placeholder="Search by Email or LRN..." value="@Context.Request.Query["searchTerm"]">
+                <select name="searchType" class="form-select">
+                    <option value="email" selected="@(Context.Request.Query["searchType"] == "email")">Email</option>
+                    <option value="lrn" selected="@(Context.Request.Query["searchType"] == "lrn")">LRN</option>
+                </select>
+                <button type="submit" class="btn btn-primary">🔍 Search</button>
+                <a asp-action="Students" class="btn btn-secondary">🔄 Reset</a>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>LRN</th>
+                            <th>Name</th>
+                            <th>Sex</th>
+                            <th>DOB</th>
+                            <th>Email</th>
+                            <th>Grade Level</th>
+                            <th>School Year</th>
+                            <th>Track/Strand</th>
+                            <th>Section</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Any()) // If there are students in the list
+                        {
+                            @foreach (var student in Model)
+                            {
+                                <tr>
+                                    <td>@student.LRN</td>
+                                    <td>@student.User.FirstName @student.User.LastName</td>
+                                    <td>@student.User.Sex</td>
+                                    <td>@student.User.DOB.ToString("MM-dd-yyyy")</td>
+                                    <td>@student.User.Email</td>
+                                    <td>@student.Grade</td>
+                                    <td>@student.Year</td>
+                                    <td>@student.Track</td>
+                                    <td>@student.Section</td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a asp-action="EditStudent" asp-route-id="@student.Id" class="btn btn-sm btn-outline-primary">✏️ Edit</a>
+                                            <a asp-action="Grades" asp-route-studentId="@student.Id" class="btn btn-sm btn-outline-info">📊 Grades</a>
+                                            <form asp-action="DeleteStudent" asp-route-id="@student.Id" method="post" onsubmit="return confirmDelete('@student.User.FirstName @student.User.LastName');">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">🗑️ Delete</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="10" class="text-center text-muted fw-bold p-3">🚨 No students found.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <a asp-action="Index" class="btn btn-secondary">🏠 Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(studentName) {
+        return confirm(`Are you sure you want to delete ${studentName}?`);
+    }
+</script>

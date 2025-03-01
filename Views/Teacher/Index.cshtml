@@ -1,0 +1,89 @@
+﻿@model SchoolManagementSystem.Models.Teacher
+
+<div class="container my-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+            <h2 class="m-0">Teacher Dashboard</h2>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <!-- Left Column: Teacher Information -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm p-3 mb-4">
+                        <h4 class="text-primary">👨‍🏫 Teacher Information</h4>
+                        <hr>
+                        <p><strong>📌 Name:</strong> @Model.User.FirstName @Model.User.LastName</p>
+                        <p><strong>📧 Email:</strong> @Model.User.Email</p>
+                        <p><strong>🎓 Position:</strong> @Model.Position</p>
+                        <p><strong>🏫 Advisory Class:</strong> @Model.AdvisoryClass</p>
+                        <p><strong>📚 Specialization:</strong> @Model.SubjectsSpecialization</p>
+                    </div>
+                </div>
+
+                <!-- Right Column: Student Management -->
+                <div class="col-md-8">
+                    <div class="card shadow-sm p-3">
+                        <h4 class="text-primary">📋 Manage Students</h4>
+                        <hr>
+
+                        <!-- Search Form -->
+                        <form method="get" asp-action="Index" class="mb-3 d-flex gap-2">
+                            <input type="text" name="searchTerm" class="form-control" placeholder="Search by Email or LRN..." value="@Context.Request.Query["searchTerm"]">
+                            <select name="searchType" class="form-select">
+                                <option value="email" selected="@(Context.Request.Query["searchType"] == "email")">Email</option>
+                                <option value="lrn" selected="@(Context.Request.Query["searchType"] == "lrn")">LRN</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">🔍 Search</button>
+                            <a asp-action="Index" class="btn btn-secondary">Reset</a>
+                        </form>
+
+                        @if (ViewBag.Students != null)
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-striped align-middle">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>LRN</th>
+                                            <th>Email</th>
+                                            <th>Name</th>
+                                            <th>Grade</th>
+                                            <th>Section</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var student in ViewBag.Students)
+                                        {
+                                            <tr>
+                                                <td>@student.LRN</td>
+                                                <td>@student.User.Email</td>
+                                                <td>@student.User.FirstName @student.User.LastName</td>
+                                                <td>@student.Grade</td>
+                                                <td>@student.Section</td>
+                                                <td>
+                                                    <div class="d-flex gap-2">
+                                                        <a asp-action="Grades" asp-route-studentId="@student.Id" class="btn btn-sm btn-outline-primary">📖 Manage Grades</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">📌 No students found.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logout Button -->
+            <div class="text-center mt-4">
+                <a asp-controller="User" asp-action="Logout" class="btn btn-danger px-4 py-2 fw-bold">🚪 Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
