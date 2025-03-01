@@ -39,6 +39,14 @@ body {
     border-bottom: none;
 }
 
+.bg-maroon {
+    background-color: #800000;
+}
+
+.text-maroon {
+    color: #800000;
+}
+
 @media (max-width: 576px) {
     .btn-lg {
         font-size: 1rem; /* Slightly smaller button text on mobile */

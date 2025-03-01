@@ -2,7 +2,7 @@
 
 <div class="container my-4">
     <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white text-center">
+        <div class="card-header bg-maroon text-white text-center">
             <h2 class="m-0">Student Dashboard</h2>
         </div>
 
@@ -11,7 +11,7 @@
                 <!-- Left Column: Student Information -->
                 <div class="col-md-5">
                     <div class="card shadow-sm p-3 mb-4">
-                        <h4 class="text-primary">👨‍🎓 Student Information</h4>
+                        <h4 class="text-maroon">👨‍🎓 Student Information</h4>
                         <hr>
                         <p><strong>📌 Name:</strong> @Model.User.FirstName @Model.User.LastName</p>
                         <p><strong>📧 Email:</strong> @Model.User.Email</p>
@@ -27,7 +27,7 @@
                 <!-- Right Column: Grades Table -->
                 <div class="col-md-7">
                     <div class="card shadow-sm p-3">
-                        <h4 class="text-primary">📊 Your Grades</h4>
+                        <h4 class="text-maroon">📊 Your Grades</h4>
                         <hr>
                         @if (Model.Grades != null && Model.Grades.Any())
                         {
