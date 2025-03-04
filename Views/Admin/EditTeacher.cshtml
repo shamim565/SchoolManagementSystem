@@ -1,41 +1,153 @@
 ﻿@model SchoolManagementSystem.Models.Teacher
 
 <div class="container my-4">
-    <h2>Edit Teacher</h2>
-    <form asp-action="EditTeacher" method="post">
-        <input asp-for="Id" type="hidden" />
-        <div class="form-group mb-3">
-            <label>First Name</label>
-            <input name="firstName" value="@Model.User.FirstName" class="form-control" required />
+    <div class="card shadow-sm">
+        <div class="card-header bg-maroon text-white">
+            <h2 class="m-0">Edit Teacher</h2>
         </div>
-        <div class="form-group mb-3">
-            <label>Last Name</label>
-            <input name="lastName" value="@Model.User.LastName" class="form-control" required />
+
+        <div class="card-body">
+            <form asp-action="EditTeacher" method="post">
+                <div class="row g-3">
+                    <!-- User Fields -->
+                    <div class="col-md-6">
+                        <label asp-for="User.Email" class="form-label fw-bold"></label>
+                        <input asp-for="User.Email" type="email" class="form-control border-primary" />
+                        <span asp-validation-for="User.Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 position-relative">
+                        <label asp-for="User.Password" class="form-label fw-bold"></label>
+                        <div class="input-group">
+                            <input asp-for="User.Password" value="@Model.User.Password" type="password" class="form-control border-primary" id="passwordField" />
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                👁️
+                            </button>
+                        </div>
+                        <span asp-validation-for="User.Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 position-relative">
+                        <label for="ConfirmPassword" class="form-label fw-bold">Confirm Password</label>
+                        <div class="input-group">
+                            <input id="ConfirmPassword" value="@Model.User.Password" type="password" class="form-control border-primary" />
+                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                                👁️
+                            </button>
+                        </div>
+                        <span id="ConfirmPasswordError" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="User.FirstName" class="form-label fw-bold"></label>
+                        <input asp-for="User.FirstName" class="form-control border-primary" />
+                        <span asp-validation-for="User.FirstName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="User.LastName" class="form-label fw-bold"></label>
+                        <input asp-for="User.LastName" class="form-control border-primary" />
+                        <span asp-validation-for="User.LastName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="User.MiddleName" class="form-label fw-bold"></label>
+                        <input asp-for="User.MiddleName" class="form-control border-primary" />
+                        <span asp-validation-for="User.MiddleName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="User.Sex" class="form-label fw-bold"></label>
+                        <select asp-for="User.Sex" class="form-select border-primary">
+                            <option value="">Select sex</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                        <span asp-validation-for="User.Sex" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="User.DOB" class="form-label fw-bold"></label>
+                        <input asp-for="User.DOB" type="date" class="form-control border-primary" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="User.DOB" class="text-danger"></span>
+                    </div>
+
+                    <!-- Teacher Fields -->
+                    <div class="col-md-6">
+                        <label asp-for="Position" class="form-label fw-bold"></label>
+                        <input asp-for="Position" class="form-control border-primary" />
+                        <span asp-validation-for="Position" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="AdvisoryClass" class="form-label fw-bold"></label>
+                        <input asp-for="AdvisoryClass" class="form-control border-primary" />
+                        <span asp-validation-for="AdvisoryClass" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label asp-for="SubjectsSpecialization" class="form-label fw-bold"></label>
+                        <input asp-for="SubjectsSpecialization" class="form-control border-primary" />
+                        <span asp-validation-for="SubjectsSpecialization" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Display general errors -->
+                <div asp-validation-summary="ModelOnly" class="text-danger mt-3"></div>
+
+                <!-- Form Buttons -->
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-success px-4">✅ Save</button>
+                    <a asp-action="Teachers" class="btn btn-secondary px-4">❌ Cancel</a>
+                </div>
+            </form>
         </div>
-        <div class="form-group mb-3">
-            <label>Middle Name</label>
-            <input name="middleName" value="@Model.User.MiddleName" class="form-control" />
-        </div>
-        <div class="form-group mb-3">
-            <label>Sex</label>
-            <select name="sex" class="form-select" required>
-                <option value="Male" selected="@(Model.User.Sex == "Male")">Male</option>
-                <option value="Female" selected="@(Model.User.Sex == "Female")">Female</option>
-            </select>
-        </div>
-        <div class="form-group mb-3">
-            <label>Date of Birth</label>
-            <input name="dob" value="@Model.User.DOB.ToString()" type="date" class="form-control" required />
-        </div>
-        <div class="form-group mb-3">
-            <label>Email</label>
-            <input name="email" value="@Model.User.Email" type="email" class="form-control" />
-        </div>
-        <div class="form-group mb-3">
-            <label asp-for="SubjectsSpecialization"></label>
-            <input asp-for="SubjectsSpecialization" class="form-control" required />
-        </div>
-        <button type="submit" class="btn btn-success">Save</button>
-        <a asp-action="Teachers" class="btn btn-secondary">Cancel</a>
-    </form>
+    </div>
 </div>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const passwordField = document.getElementById('passwordField');
+            const confirmPasswordField = document.getElementById('ConfirmPassword');
+            const errorElement = document.getElementById('ConfirmPasswordError');
+            const togglePassword = document.getElementById('togglePassword');
+            const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+
+            togglePassword.addEventListener('click', function () {
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    togglePassword.innerHTML = '❌';
+                } else {
+                    passwordField.type = 'password';
+                    togglePassword.innerHTML = '👁️';
+                }
+            });
+
+            toggleConfirmPassword.addEventListener('click', function () {
+                if (confirmPasswordField.type === 'password') {
+                    confirmPasswordField.type = 'text';
+                    toggleConfirmPassword.innerHTML = '❌';
+                } else {
+                    confirmPasswordField.type = 'password';
+                    toggleConfirmPassword.innerHTML = '👁️';
+                }
+            });
+
+            confirmPasswordField.addEventListener('input', function () {
+                if (passwordField.value !== confirmPasswordField.value) {
+                    errorElement.textContent = 'Passwords do not match.';
+                } else {
+                    errorElement.textContent = '';
+                }
+            });
+
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function (e) {
+                if (passwordField.value !== confirmPasswordField.value) {
+                    e.preventDefault();
+                    errorElement.textContent = 'Passwords do not match.';
+                }
+            });
+        });
+    </script>
+}

@@ -1,41 +1,59 @@
 ﻿@model SchoolManagementSystem.Models.Grade
 
 <div class="container my-4">
-    <h2>Edit Grade</h2>
-    <form asp-action="EditGrade" method="post">
-        <input type="hidden" asp-for="Id" />
-        <input type="hidden" asp-for="StudentId" />
-        <div class="form-group mb-3">
-            <label asp-for="Subject"></label>
-            <input asp-for="Subject" class="form-control" required />
+    <div class="card shadow-sm">
+        <div class="card-header bg-maroon text-white">
+            <h2 class="m-0">Edit Grade</h2>
         </div>
-        <div class="form-group mb-3">
-            <label asp-for="Quarter1"></label>
-            <input asp-for="Quarter1" class="form-control" type="number" step="0.01" />
+
+        <div class="card-body">
+            <form asp-action="EditGrade" method="post">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="StudentId" />
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="Subject" class="form-label fw-bold"></label>
+                        <input asp-for="Subject" class="form-control border-primary" required />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Quarter1" class="form-label fw-bold"></label>
+                        <input asp-for="Quarter1" class="form-control border-primary" type="number" step="0.01" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Quarter2" class="form-label fw-bold"></label>
+                        <input asp-for="Quarter2" class="form-control border-primary" type="number" step="0.01" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Quarter3" class="form-label fw-bold"></label>
+                        <input asp-for="Quarter3" class="form-control border-primary" type="number" step="0.01" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Quarter4" class="form-label fw-bold"></label>
+                        <input asp-for="Quarter4" class="form-control border-primary" type="number" step="0.01" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Teacher</label>
+                        <select asp-for="TeacherId" class="form-select border-primary">
+                            <option value="">No Teacher</option>
+                            @foreach (var teacher in ViewBag.Teachers)
+                            {
+                                <option value="@teacher.Id">@teacher.User.FirstName @teacher.User.LastName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-success px-4">✅ Save</button>
+                    <a asp-action="Grades" asp-route-studentId="@Model.StudentId" class="btn btn-secondary px-4">❌ Cancel</a>
+                </div>
+            </form>
         </div>
-        <div class="form-group mb-3">
-            <label asp-for="Quarter2"></label>
-            <input asp-for="Quarter2" class="form-control" type="number" step="0.01" />
-        </div>
-        <div class="form-group mb-3">
-            <label asp-for="Quarter3"></label>
-            <input asp-for="Quarter3" class="form-control" type="number" step="0.01" />
-        </div>
-        <div class="form-group mb-3">
-            <label asp-for="Quarter4"></label>
-            <input asp-for="Quarter4" class="form-control" type="number" step="0.01" />
-        </div>
-        <div class="form-group mb-3">
-            <label>Teacher</label>
-            <select asp-for="TeacherId" class="form-select">
-                <option value="">No Teacher</option>
-                @foreach (var teacher in ViewBag.Teachers)
-                {
-                    <option value="@teacher.Id">@teacher.User.FirstName @teacher.User.LastName</option>
-                }
-            </select>
-        </div>
-        <button type="submit" class="btn btn-success">Save</button>
-        <a asp-action="Grades" asp-route-studentId="@Model.StudentId" class="btn btn-secondary">Cancel</a>
-    </form>
+    </div>
 </div>
