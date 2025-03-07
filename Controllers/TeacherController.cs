@@ -14,16 +14,6 @@ namespace SchoolManagementSystem.Controllers
             _context = context;
         }
 
-        //public IActionResult Index()
-        //{
-        //    if (HttpContext.Session.GetString("UserType") != UserType.Teacher.ToString())
-        //        return RedirectToAction("Login", "User");
-
-        //    var userId = HttpContext.Session.GetInt32("UserId").Value;
-        //    var teacher = _context.Teachers.Include(t => t.User).FirstOrDefault(t => t.UserId == userId);
-        //    return View(teacher);
-        //}
-
         public async Task<IActionResult> Index(string searchTerm, string searchType)
         {
             if (HttpContext.Session.GetString("UserType") != UserType.Teacher.ToString())
@@ -78,19 +68,41 @@ namespace SchoolManagementSystem.Controllers
         [HttpGet]
         public IActionResult EditGrade(int id)
         {
-            var grade = _context.Grades.FirstOrDefault(g => g.Id == id);
-            if (grade == null) return NotFound();
-
-            ViewBag.Teachers = _context.Teachers.Include(t => t.User).ToList();
+            var grade = _context.Grades
+                .Include(g => g.Teacher).ThenInclude(t => t.User)
+                .Include(g => g.Student)
+                .FirstOrDefault(g => g.Id == id);
+            if (grade == null)
+            {
+                return NotFound();
+            }
+            ViewBag.Teachers = _context.Teachers.ToList();
             return View(grade);
         }
 
         [HttpPost]
         public IActionResult EditGrade(Grade grade)
         {
+            if (!ModelState.IsValid)
+            {
+                foreach (var error in ModelState)
+                {
+                    Console.WriteLine($"{error.Key}: {string.Join(", ", error.Value.Errors.Select(e => e.ErrorMessage))}");
+                }
+            }
             if (ModelState.IsValid)
             {
-                _context.Grades.Update(grade);
+                var existingGrade = _context.Grades.Find(grade.Id);
+                if (existingGrade == null)
+                {
+                    return NotFound();
+                }
+
+                existingGrade.Quarter1 = grade.Quarter1;
+                existingGrade.Quarter2 = grade.Quarter2;
+                existingGrade.Quarter3 = grade.Quarter3;
+                existingGrade.Quarter4 = grade.Quarter4;
+
                 _context.SaveChanges();
                 return RedirectToAction("Grades", new { studentId = grade.StudentId });
             }

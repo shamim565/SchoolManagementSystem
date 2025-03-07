@@ -1,4 +1,8 @@
-﻿@model SchoolManagementSystem.Models.Grade
+﻿@{
+    ViewData["Title"] = "Add Grade";
+}
+
+@model SchoolManagementSystem.Models.Grade
 
 <div class="container my-4">
     <div class="card shadow-sm">
@@ -14,6 +18,7 @@
                     <div class="col-md-6">
                         <label asp-for="Subject" class="form-label fw-bold"></label>
                         <input asp-for="Subject" class="form-control border-secondary" required />
+                        <span asp-validation-for="Subject" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6">
@@ -24,26 +29,43 @@
                                 <option value="@type">@type</option>
                             }
                         </select>
+                        <span asp-validation-for="SubjectType" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6">
+                        <label asp-for="Semester" class="form-label fw-bold"></label>
+                        <select asp-for="Semester" id="Semester" class="form-select border-primary">
+                            @* <option>No Semester</option> *@
+                            @foreach (var type in Enum.GetValues(typeof(SemesterType)))
+                            {
+                                <option value="@type">@type</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Semester" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 FirstSemesterFields">
                         <label asp-for="Quarter1" class="form-label fw-bold"></label>
                         <input asp-for="Quarter1" class="form-control border-primary" type="number" step="0.01" />
+                        <span asp-validation-for="Quarter1" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 FirstSemesterFields">
                         <label asp-for="Quarter2" class="form-label fw-bold"></label>
                         <input asp-for="Quarter2" class="form-control border-primary" type="number" step="0.01" />
+                        <span asp-validation-for="Quarter2" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 d-none SecondSemesterFields">
                         <label asp-for="Quarter3" class="form-label fw-bold"></label>
                         <input asp-for="Quarter3" class="form-control border-primary" type="number" step="0.01" />
+                        <span asp-validation-for="Quarter3" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 d-none SecondSemesterFields">
                         <label asp-for="Quarter4" class="form-label fw-bold"></label>
                         <input asp-for="Quarter4" class="form-control border-primary" type="number" step="0.01" />
+                        <span asp-validation-for="Quarter4" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6">
@@ -67,3 +89,28 @@
         </div>
     </div>
 </div>
+
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const semesterDropdown = document.getElementById('Semester');
+            const firstSemesterFields = document.querySelectorAll('.FirstSemesterFields');
+            const secondSemesterFields = document.querySelectorAll('.SecondSemesterFields');
+
+            semesterDropdown.addEventListener('change', function () {
+                const selectedSemester = semesterDropdown.value;
+
+                // Show fields based on selected semester
+                if (selectedSemester === 'First') {
+                    secondSemesterFields.forEach(field => field.classList.add('d-none'));
+                    firstSemesterFields.forEach(field => field.classList.remove('d-none'));
+                } else if (selectedSemester === 'Second') {
+                    firstSemesterFields.forEach(field => field.classList.add('d-none'));
+                    secondSemesterFields.forEach(field => field.classList.remove('d-none'));
+                }
+            });
+
+        });
+    </script>
+}

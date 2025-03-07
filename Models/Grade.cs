@@ -12,6 +12,8 @@ namespace SchoolManagementSystem.Models
 
         [Required]
         public SubjectType SubjectType { get; set; }
+        [Required]
+        public SemesterType Semester { get; set; }
         public double? Quarter1 { get; set; }
         public double? Quarter2 { get; set; }
         public double? Quarter3 { get; set; }
@@ -29,5 +31,10 @@ namespace SchoolManagementSystem.Models
         Core,
         Applied,
         Specialized,
+    }
+
+    public enum SemesterType
+    {
+        First, Second
     }
 }

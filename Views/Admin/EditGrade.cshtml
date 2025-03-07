@@ -18,21 +18,41 @@
                     </div>
 
                     <div class="col-md-6">
+                        <label asp-for="SubjectType" class="form-label fw-bold"></label>
+                        <select asp-for="SubjectType" class="form-select border-primary">
+                            @foreach (var type in Enum.GetValues(typeof(SubjectType)))
+                            {
+                                <option value="@type">@type</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Semester" class="form-label fw-bold"></label>
+                        <select asp-for="Semester" id="Semester" class="form-select border-primary">
+                            @foreach (var type in Enum.GetValues(typeof(SemesterType)))
+                            {
+                                <option value="@type">@type</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 FirstSemesterFields">
                         <label asp-for="Quarter1" class="form-label fw-bold"></label>
                         <input asp-for="Quarter1" class="form-control border-primary" type="number" step="0.01" />
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 FirstSemesterFields">
                         <label asp-for="Quarter2" class="form-label fw-bold"></label>
                         <input asp-for="Quarter2" class="form-control border-primary" type="number" step="0.01" />
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 SecondSemesterFields">
                         <label asp-for="Quarter3" class="form-label fw-bold"></label>
                         <input asp-for="Quarter3" class="form-control border-primary" type="number" step="0.01" />
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 SecondSemesterFields">
                         <label asp-for="Quarter4" class="form-label fw-bold"></label>
                         <input asp-for="Quarter4" class="form-control border-primary" type="number" step="0.01" />
                     </div>
@@ -57,3 +77,33 @@
         </div>
     </div>
 </div>
+
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const semesterDropdown = document.getElementById('Semester');
+            const firstSemesterFields = document.querySelectorAll('.FirstSemesterFields');
+            const secondSemesterFields = document.querySelectorAll('.SecondSemesterFields');
+
+            // Function to toggle visibility of quarter fields based on selected semester
+            const toggleQuarterFields = () => {
+                const selectedSemester = semesterDropdown.value;
+
+                if (selectedSemester === 'First') {
+                    secondSemesterFields.forEach(field => field.classList.add('d-none'));
+                    firstSemesterFields.forEach(field => field.classList.remove('d-none'));
+                } else if (selectedSemester === 'Second') {
+                    firstSemesterFields.forEach(field => field.classList.add('d-none'));
+                    secondSemesterFields.forEach(field => field.classList.remove('d-none'));
+                }
+            };
+
+            // Set initial visibility based on the current semester value
+            toggleQuarterFields();
+
+            // Add event listener to handle changes in the semester dropdown
+            semesterDropdown.addEventListener('change', toggleQuarterFields);
+        });
+    </script>
+}

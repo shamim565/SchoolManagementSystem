@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Data;
 using SchoolManagementSystem.Models;
@@ -67,30 +68,26 @@ namespace SchoolManagementSystem.Controllers
 
             try
             {
-                // Set the UserType to Student
                 student.User.UserType = UserType.Student;
 
-                // Add the User to the database
                 _context.Users.Add(student.User);
-                _context.SaveChanges(); // Save the User to generate the User.Id
+                _context.SaveChanges();
 
-                // Link the Student to the User
                 student.UserId = student.User.Id;
 
-                // Add the Student to the database
                 _context.Students.Add(student);
                 _context.SaveChanges();
+
+                TempData["SuccessMessage"] = "Student added successfully!";
 
                 // Redirect to the list of students
                 return RedirectToAction("Students", "Admin");
             }
             catch (Exception ex)
             {
-                // Log the exception (e.g., using a logging framework)
                 ModelState.AddModelError("", "An error occurred while saving the data. Please try again.");
             }
 
-            // If the model state is not valid, return the view with the current data
             return View();
         }
 
@@ -148,6 +145,7 @@ namespace SchoolManagementSystem.Controllers
 
                     _context.Update(existingStudent);
                     _context.SaveChanges();
+                    TempData["SuccessMessage"] = "Student updated successfully!";
 
                     return RedirectToAction("Students");
                 }
@@ -216,17 +214,13 @@ namespace SchoolManagementSystem.Controllers
 
             try
             {
-                // Set the UserType to Teacher
                 teacher.User.UserType = UserType.Teacher;
 
-                // Add the User to the database
                 _context.Users.Add(teacher.User);
-                _context.SaveChanges(); // Save the User to generate the User.Id
+                _context.SaveChanges(); 
 
-                // Link the Student to the User
                 teacher.UserId = teacher.User.Id;
 
-                // Add the Student to the database
                 _context.Teachers.Add(teacher);
                 _context.SaveChanges();
 
@@ -298,12 +292,26 @@ namespace SchoolManagementSystem.Controllers
                 return RedirectToAction("Login", "User");
 
             var teacher = _context.Teachers.Include(t => t.User).FirstOrDefault(t => t.Id == id);
-            if (teacher != null)
+
+            if (teacher == null)
             {
-                _context.Users.Remove(teacher.User); // Delete associated User
+                TempData["ErrorMessage"] = "Teacher not found.";
+                return RedirectToAction("Teachers");
+            }
+            
+            try{
+                _context.Users.Remove(teacher.User);
                 _context.Teachers.Remove(teacher);
                 _context.SaveChanges();
                 TempData["SuccessMessage"] = "Teacher deleted successfully!";
+            }
+            catch (DbUpdateException ex) when (ex.InnerException is SqlException sqlEx && sqlEx.Number == 547)
+            {
+                TempData["ErrorMessage"] = $"{teacher.User.FirstName} {teacher.User.LastName} cannot be deleted because they are associated with one or more grades.";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while deleting the teacher.";
             }
             return RedirectToAction("Teachers");
         }
