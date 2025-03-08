@@ -14,7 +14,7 @@ namespace SchoolManagementSystem.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string searchTerm, string searchType)
+        public async Task<IActionResult> Index(string searchTerm, string searchType, string gradeFilter, string sortField, string sortOrder)
         {
             if (HttpContext.Session.GetString("UserType") != UserType.Teacher.ToString())
                 return RedirectToAction("Login", "User");
@@ -29,11 +29,12 @@ namespace SchoolManagementSystem.Controllers
             }
 
             var students = _context.Students
-            .Include(s => s.User)
-            .Include(s => s.Grades)
-            .Where(s => s.Grades.Any(g => g.TeacherId == teacher.Id))
-            .AsQueryable();
+                .Include(s => s.User)
+                .Include(s => s.Grades)
+                .Where(s => s.Grades.Any(g => g.TeacherId == teacher.Id))
+                .AsQueryable();
 
+            // Search Filtering
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 searchTerm = searchTerm.Trim().ToLower();
@@ -47,6 +48,29 @@ namespace SchoolManagementSystem.Controllers
                 }
             }
 
+            // Grade Filtering
+            if (!string.IsNullOrEmpty(gradeFilter))
+            {
+                students = students.Where(s => s.Grade == gradeFilter);
+            }
+
+            // Sorting Logic
+            if (!string.IsNullOrEmpty(sortField))
+            {
+                bool isDescending = sortOrder == "desc";
+                students = sortField switch
+                {
+                    "lrn" => isDescending ? students.OrderByDescending(s => s.LRN) : students.OrderBy(s => s.LRN),
+                    "name" => isDescending ? students.OrderByDescending(s => s.User.FirstName) : students.OrderBy(s => s.User.FirstName),
+                    "grade" => isDescending ? students.OrderByDescending(s => s.Grade) : students.OrderBy(s => s.Grade),
+                    "section" => isDescending ? students.OrderByDescending(s => s.Section) : students.OrderBy(s => s.Section),
+                    "email" => isDescending ? students.OrderByDescending(s => s.User.Email) : students.OrderBy(s => s.User.Email),
+                    _ => students
+                };
+            }
+
+            ViewBag.SortField = sortField;
+            ViewBag.SortOrder = sortOrder == "asc" ? "desc" : "asc"; // Toggle sorting order
             ViewBag.Students = await students.ToListAsync();
             return View(teacher);
         }

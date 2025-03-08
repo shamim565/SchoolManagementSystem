@@ -27,16 +27,39 @@
                 </div>
             }
 
-            <div class="table-responsive">
-                <table class="table table-striped align-middle">
+            <!-- Search Form -->
+            <form method="get" asp-action="Teachers" class="mb-3 d-flex gap-2">
+                <input type="text" name="searchTerm" class="form-control" placeholder="Search teachers by name or email or subject or advisory class or position..." value="@Context.Request.Query["searchTerm"]">
+                <button type="submit" class="btn btn-secondary wrap-none">🔍 Search</button>
+                <a asp-action="Teachers" class="btn btn-secondary wrap-none">🔄 Reset</a>
+            </form>
+
+            <div class="table-responsive wrap-none" style="overflow-x: auto;">
+                <table class="table table-striped align-middle wrap-none">
                     <thead class="table-dark">
                         <tr>
-                            <th>Name</th>
+                            <th>
+                                <a class="custom-link" asp-action="Teachers" asp-route-sortField="email" asp-route-sortOrder="@ViewBag.SortOrder">
+                                    Email @(ViewBag.SortField == "email" ? (ViewBag.SortOrder == "asc" ? "⬆" : "⬇") : "⬍")
+                                </a>
+                            </th>
+                            <th>
+                                <a class="custom-link" asp-action="Teachers" asp-route-sortField="name" asp-route-sortOrder="@ViewBag.SortOrder">
+                                    Name @(ViewBag.SortField == "name" ? (ViewBag.SortOrder == "asc" ? "⬆" : "⬇") : "⬍")
+                                </a>
+                            </th>
                             <th>Sex</th>
                             <th>DOB</th>
-                            <th>Email</th>
-                            <th>Position</th>
-                            <th>Advisory Class</th>
+                            <th>
+                                <a class="custom-link" asp-action="Teachers" asp-route-sortField="position" asp-route-sortOrder="@ViewBag.SortOrder">
+                                    Position @(ViewBag.SortField == "position" ? (ViewBag.SortOrder == "asc" ? "⬆" : "⬇") : "⬍")
+                                </a>
+                            </th>
+                            <th>
+                                <a class="custom-link" asp-action="Teachers" asp-route-sortField="advisory" asp-route-sortOrder="@ViewBag.SortOrder">
+                                    Advisory Class @(ViewBag.SortField == "advisory" ? (ViewBag.SortOrder == "asc" ? "⬆" : "⬇") : "⬍")
+                                </a>
+                            </th>
                             <th>Specialization</th>
                             <th>Actions</th>
                         </tr>
@@ -45,10 +68,10 @@
                         @foreach (var teacher in Model)
                         {
                             <tr>
+                                <td>@teacher.User.Email</td>
                                 <td>@teacher.User.FirstName @teacher.User.LastName</td>
                                 <td>@teacher.User.Sex</td>
                                 <td>@teacher.User.DOB.ToString("MM-dd-yyyy")</td>
-                                <td>@teacher.User.Email</td>
                                 <td>@teacher.Position</td>
                                 <td>@teacher.AdvisoryClass</td>
                                 <td>@teacher.SubjectsSpecialization</td>

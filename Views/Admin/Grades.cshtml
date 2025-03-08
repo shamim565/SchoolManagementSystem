@@ -74,11 +74,14 @@
                                 .Where(g => g.HasValue);
                                 var firstSemAverage = firstSemGrades.Any() ? firstSemGrades.Average() : null;
                             }
-                            <tr>
-                                <td colspan="4" class="fw-bold">General Average for the semester</td>
-                                <td class="text-success fw-bold">@(firstSemAverage.HasValue ? firstSemAverage.Value.ToString("F2") : "N/A")</td>
-                                <td colspan="2"></td>
-                            </tr>
+                            @if(firstSemGrades.Any())
+                            {
+                                <tr>
+                                    <td colspan="4" class="fw-bold">General Average for the semester</td>
+                                    <td class="text-success fw-bold">@(firstSemAverage.HasValue ? firstSemAverage.Value.ToString("F2") : "N/A")</td>
+                                    <td colspan="2"></td>
+                                </tr>
+                            }
                         </tfoot>
                     </table>
                 </div>
@@ -130,18 +133,23 @@
                                 .Where(g => g.HasValue);
                                 var secondSemAverage = secondSemGrades.Any() ? secondSemGrades.Average() : null;
                             }
-                            <tr>
-                                <td colspan="4" class="fw-bold">General Average for the semester</td>
-                                <td class="text-success fw-bold">@(secondSemAverage.HasValue ? secondSemAverage.Value.ToString("F2") : "N/A")</td>
-                                <td colspan="2"></td>
-                            </tr>
+                            @if(secondSemGrades.Any())
+                            {
+                                <tr>
+                                    <td colspan="4" class="fw-bold">General Average for the semester</td>
+                                    <td class="text-success fw-bold">@(secondSemAverage.HasValue ? secondSemAverage.Value.ToString("F2") : "N/A")</td>
+                                    <td colspan="2"></td>
+                                </tr>
+                            }
                         </tfoot>
                     </table>
                 </div>
             </div>
 
             <div class="d-flex justify-content-end">
-                <a asp-action="DownloadGrade" asp-route-studentId="@studentId" class="btn btn-light text-maroon fw-bold">📄 Download Grade Sheet</a>
+                @if(Model.Any()){
+                    <a asp-action="DownloadGrade" asp-route-studentId="@studentId" class="btn btn-light text-maroon fw-bold">📄 Download Grade Sheet</a>
+                }
                 <a asp-action="Students" class="btn btn-secondary ms-2">🏠 Back to Students</a>
             </div>
         </div>

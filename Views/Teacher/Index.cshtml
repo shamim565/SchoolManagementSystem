@@ -26,29 +26,60 @@
                     <div class="card shadow-sm p-3">
                         <h4 class="text-maroon">📋 Manage Students</h4>
                         <hr>
-
-                        <!-- Search Form -->
+                        <!-- Search & Filter Form -->
                         <form method="get" asp-action="Index" class="mb-3 d-flex gap-2">
+                            <!-- Search Bar -->
                             <input type="text" name="searchTerm" class="form-control" placeholder="Search by Email or LRN..." value="@Context.Request.Query["searchTerm"]">
+
+                            <!-- Search Type Dropdown -->
                             <select name="searchType" class="form-select">
                                 <option value="email" selected="@(Context.Request.Query["searchType"] == "email")">Email</option>
                                 <option value="lrn" selected="@(Context.Request.Query["searchType"] == "lrn")">LRN</option>
                             </select>
-                            <button type="submit" class="btn btn-secondary">🔍 Search</button>
-                            <a asp-action="Index" class="btn btn-secondary">🔄 Reset</a>
+
+                            <!-- Grade Filter Dropdown -->
+                            <select name="gradeFilter" class="form-select">
+                                <option value="">All Grades</option>
+                                <option value="11" selected="@(Context.Request.Query["gradeFilter"] == "11")">Grade 11</option>
+                                <option value="12" selected="@(Context.Request.Query["gradeFilter"] == "12")">Grade 12</option>
+                            </select>
+
+                            <button type="submit" class="btn btn-secondary wrap-none">🔍 Search</button>
+                            <a asp-action="Index" class="btn btn-secondary wrap-none">🔄 Reset</a>
                         </form>
 
-                        @if (ViewBag.Students != null)
+                        <!-- Student List Table -->
+                        @if (ViewBag.Students != null && ViewBag.Students.Count > 0)
                         {
                             <div class="table-responsive">
                                 <table class="table table-striped align-middle">
                                     <thead class="table-dark">
-                                        <tr>
-                                            <th>LRN</th>
-                                            <th>Email</th>
-                                            <th>Name</th>
-                                            <th>Grade</th>
-                                            <th>Section</th>
+                                        <tr class="text-white">
+                                            <th>
+                                                <a class="custom-link" asp-action="Index" asp-route-sortField="lrn" asp-route-sortOrder="@ViewBag.SortOrder">
+                                                    LRN @(ViewBag.SortField == "lrn" ? (ViewBag.SortOrder == "asc" ? "⬆" : "⬇") : "⬍")
+                                                </a>
+                                            </th>
+                                            <th>
+                                                <a class="custom-link" asp-action="Index" asp-route-sortField="name" asp-route-sortOrder="@ViewBag.SortOrder">
+                                                    Name @(ViewBag.SortField == "name" ? (ViewBag.SortOrder == "asc" ? "⬆" : "⬇") : "⬍")
+                                                </a>
+                                            </th>
+                                            <th>
+                                                <a class="custom-link"  asp-action="Index" asp-route-sortField="grade" asp-route-sortOrder="@ViewBag.SortOrder">
+                                                    Grade @(ViewBag.SortField == "grade" ? (ViewBag.SortOrder == "asc" ? "⬆" : "⬇") : "⬍")
+                                                </a>
+                                            </th>
+                                            <th>
+                                                <a class="custom-link" asp-action="Index" asp-route-sortField="section" asp-route-sortOrder="@ViewBag.SortOrder">
+                                                    Section @(ViewBag.SortField == "section" ? (ViewBag.SortOrder == "asc" ? "⬆" : "⬇") : "⬍")
+                                                </a>
+                                            </th>
+                                            <th>
+                                                <a class="custom-link" asp-action="Index" asp-route-sortField="email" asp-route-sortOrder="@ViewBag.SortOrder">
+                                                    Email @(ViewBag.SortField == "email" ? (ViewBag.SortOrder == "asc" ? "⬆" : "⬇") : "⬍")
+                                                </a>
+                                            </th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -57,14 +88,12 @@
                                         {
                                             <tr>
                                                 <td>@student.LRN</td>
-                                                <td>@student.User.Email</td>
                                                 <td>@student.User.FirstName @student.User.LastName</td>
                                                 <td>@student.Grade</td>
                                                 <td>@student.Section</td>
+                                                <td>@student.User.Email</td>
                                                 <td>
-                                                    <div class="d-flex gap-2">
-                                                        <a asp-action="Grades" asp-route-studentId="@student.Id" class="btn btn-sm btn-outline-primary">📖 Manage Grades</a>
-                                                    </div>
+                                                    <a asp-action="Grades" asp-route-studentId="@student.Id" class="btn btn-sm btn-outline-primary">📖 Manage Grades</a>
                                                 </td>
                                             </tr>
                                         }
@@ -74,7 +103,7 @@
                         }
                         else
                         {
-                            <p class="text-muted">📌 No students found.</p>
+                            <p class="text-muted text-center">📌 No students found.</p>
                         }
                     </div>
                 </div>

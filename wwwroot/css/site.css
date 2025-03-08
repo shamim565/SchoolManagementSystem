@@ -46,6 +46,15 @@ body {
     color: #800000;
 }
 
+.custom-link{
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.wrap-none {
+    white-space: nowrap;
+}
+
 @media (max-width: 576px) {
     .btn-lg {
         font-size: 1rem; /* Slightly smaller button text on mobile */

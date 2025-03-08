@@ -34,28 +34,53 @@
                     <option value="email" selected="@(Context.Request.Query["searchType"] == "email")">Email</option>
                     <option value="lrn" selected="@(Context.Request.Query["searchType"] == "lrn")">LRN</option>
                 </select>
-                <button type="submit" class="btn btn-secondary">🔍 Search</button>
-                <a asp-action="Students" class="btn btn-secondary">🔄 Reset</a>
+                <select name="gradeFilter" class="form-select">
+                    <option value="">All Grades</option>
+                    <option value="11" selected="@(Context.Request.Query["gradeFilter"] == "11")">Grade 11</option>
+                    <option value="12" selected="@(Context.Request.Query["gradeFilter"] == "12")">Grade 12</option>
+                </select>
+                <button type="submit" class="btn btn-secondary wrap-none">🔍 Search</button>
+                <a asp-action="Students" class="btn btn-secondary wrap-none">🔄 Reset</a>
             </form>
 
-            <div class="table-responsive">
-                <table class="table table-striped align-middle">
+            <div class="table-responsive" style="overflow-x: auto;">
+                <table class="table table-striped align-middle wrap-none">
                     <thead class="table-dark">
                         <tr>
-                            <th>LRN</th>
-                            <th>Name</th>
+                            <th>
+                                <a class="custom-link" asp-action="Students" asp-route-sortField="lrn" asp-route-sortOrder="@ViewBag.SortOrder">
+                                    LRN @(ViewBag.SortField == "lrn" ? (ViewBag.SortOrder == "asc" ? "⬆" : "⬇") : "⬍")
+                                </a>
+                            </th>
+                            <th>
+                                <a class="custom-link" asp-action="Students" asp-route-sortField="name" asp-route-sortOrder="@ViewBag.SortOrder">
+                                    Name @(ViewBag.SortField == "name" ? (ViewBag.SortOrder == "asc" ? "⬆" : "⬇") : "⬍")
+                                </a>
+                            </th>
                             <th>Sex</th>
                             <th>DOB</th>
-                            <th>Email</th>
-                            <th>Grade Level</th>
+                            <th>
+                                <a class="custom-link" asp-action="Students" asp-route-sortField="email" asp-route-sortOrder="@ViewBag.SortOrder">
+                                    Email @(ViewBag.SortField == "email" ? (ViewBag.SortOrder == "asc" ? "⬆" : "⬇") : "⬍")
+                                </a>
+                            </th>
+                            <th>
+                                <a class="custom-link" asp-action="Students" asp-route-sortField="grade" asp-route-sortOrder="@ViewBag.SortOrder">
+                                    Grade @(ViewBag.SortField == "grade" ? (ViewBag.SortOrder == "asc" ? "⬆" : "⬇") : "⬍")
+                                </a>
+                            </th>
                             <th>School Year</th>
                             <th>Track/Strand</th>
-                            <th>Section</th>
+                            <th>
+                                <a class="custom-link" asp-action="Students" asp-route-sortField="section" asp-route-sortOrder="@ViewBag.SortOrder">
+                                    Section @(ViewBag.SortField == "section" ? (ViewBag.SortOrder == "asc" ? "⬆" : "⬇") : "⬍")
+                                </a>
+                            </th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if (Model.Any()) // If there are students in the list
+                        @if (Model.Any())
                         {
                             @foreach (var student in Model)
                             {
@@ -91,7 +116,7 @@
                 </table>
             </div>
 
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-end mt-2">
                 <a asp-action="Index" class="btn btn-secondary">🏠 Back to Dashboard</a>
             </div>
         </div>
