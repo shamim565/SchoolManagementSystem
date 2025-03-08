@@ -29,7 +29,7 @@
             }
 
             <!-- First Semester Section -->
-            <div class="mb-5">
+            <div class="mb-2">
                 <h3 class="text-maroon mb-3">First Semester</h3>
                 <div class="table-responsive">
                     <table class="table table-striped align-middle">
@@ -67,12 +67,25 @@
                                 </tr>
                             }
                         </tbody>
+                        <tfoot>
+                            @{
+                                var firstSemGrades = Model.Where(g => g.Semester == SchoolManagementSystem.Models.SemesterType.First)
+                                .Select(g => (g.Quarter1.HasValue && g.Quarter2.HasValue) ? (g.Quarter1 + g.Quarter2) / 2.0 : (double?)null)
+                                .Where(g => g.HasValue);
+                                var firstSemAverage = firstSemGrades.Any() ? firstSemGrades.Average() : null;
+                            }
+                            <tr>
+                                <td colspan="4" class="fw-bold">General Average for the semester</td>
+                                <td class="text-success fw-bold">@(firstSemAverage.HasValue ? firstSemAverage.Value.ToString("F2") : "N/A")</td>
+                                <td colspan="2"></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
 
             <!-- Second Semester Section -->
-            <div class="mb-5">
+            <div class="mb-2">
                 <h3 class="text-maroon mb-3">Second Semester</h3>
                 <div class="table-responsive">
                     <table class="table table-striped align-middle">
@@ -110,12 +123,26 @@
                                 </tr>
                             }
                         </tbody>
+                        <tfoot>
+                            @{
+                                var secondSemGrades = Model.Where(g => g.Semester == SchoolManagementSystem.Models.SemesterType.Second)
+                                .Select(g => (g.Quarter3.HasValue && g.Quarter4.HasValue) ? (g.Quarter3 + g.Quarter4) / 2.0 : (double?)null)
+                                .Where(g => g.HasValue);
+                                var secondSemAverage = secondSemGrades.Any() ? secondSemGrades.Average() : null;
+                            }
+                            <tr>
+                                <td colspan="4" class="fw-bold">General Average for the semester</td>
+                                <td class="text-success fw-bold">@(secondSemAverage.HasValue ? secondSemAverage.Value.ToString("F2") : "N/A")</td>
+                                <td colspan="2"></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
 
             <div class="d-flex justify-content-end">
-                <a asp-action="Students" class="btn btn-secondary">🏠 Back to Students</a>
+                <a asp-action="DownloadGrade" asp-route-studentId="@studentId" class="btn btn-light text-maroon fw-bold">📄 Download Grade Sheet</a>
+                <a asp-action="Students" class="btn btn-secondary ms-2">🏠 Back to Students</a>
             </div>
         </div>
     </div>

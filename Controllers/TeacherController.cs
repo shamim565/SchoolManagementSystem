@@ -31,6 +31,7 @@ namespace SchoolManagementSystem.Controllers
             var students = _context.Students
             .Include(s => s.User)
             .Include(s => s.Grades)
+            .Where(s => s.Grades.Any(g => g.TeacherId == teacher.Id))
             .AsQueryable();
 
             if (!string.IsNullOrEmpty(searchTerm))

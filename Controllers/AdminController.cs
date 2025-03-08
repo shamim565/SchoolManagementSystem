@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using SelectPdf;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Data;
 using SchoolManagementSystem.Models;
+using SchoolManagementSystem.Services;
+
 
 namespace SchoolManagementSystem.Controllers
 {
@@ -307,7 +310,7 @@ namespace SchoolManagementSystem.Controllers
             }
             catch (DbUpdateException ex) when (ex.InnerException is SqlException sqlEx && sqlEx.Number == 547)
             {
-                TempData["ErrorMessage"] = $"{teacher.User.FirstName} {teacher.User.LastName} cannot be deleted because they are associated with one or more grades.";
+                TempData["ErrorMessage"] = $"{teacher.User.FirstName} {teacher.User.LastName} cannot be deleted because he/she is  associated with one or more grades.";
             }
             catch (Exception ex)
             {
@@ -412,5 +415,26 @@ namespace SchoolManagementSystem.Controllers
             TempData["SuccessMessage"] = "Grade deleted successfully.";
             return RedirectToAction("Grades", new { studentId = grade.StudentId });
         }
+
+        [HttpGet]
+        public IActionResult DownloadGrade(int studentId)
+        {
+            var userType = HttpContext.Session.GetString("UserType");
+            if (userType != UserType.Administrator.ToString() && userType != UserType.Teacher.ToString())
+                return RedirectToAction("Login", "User");
+
+            try
+            {
+                GradeReportService gradeReportService = new GradeReportService();
+                var pdfBytes = gradeReportService.GenerateGradeReportPdf(studentId, _context);
+                return File(pdfBytes, "application/pdf", $"GradeReport_{_context.Students.First(s => s.Id == studentId).User.FirstName}_{studentId}.pdf");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Error generating PDF: {ex.Message}";
+                return RedirectToAction("Grades", new { studentId });
+            }
+        }
+
     }
 }

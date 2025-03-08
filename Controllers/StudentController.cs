@@ -23,7 +23,12 @@ namespace SchoolManagementSystem.Controllers
             if (userId == null)
                 return RedirectToAction("Login", "User");
 
-            var student = _context.Students.Include(s => s.User).Include(s => s.Grades).FirstOrDefault(s => s.UserId == userId.Value);
+           var student = _context.Students
+                .Include(s => s.User)
+                .Include(s => s.Grades)
+                .ThenInclude(g => g.Teacher)
+                .ThenInclude(t => t.User)
+                .FirstOrDefault(s => s.UserId == userId.Value);
             return View(student);
         }
     }

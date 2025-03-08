@@ -24,41 +24,105 @@
                     </div>
                 </div>
 
-                <!-- Right Column: Grades Table -->
+                <!-- Right Column: Grades Section -->
                 <div class="col-md-7">
                     <div class="card shadow-sm p-3">
                         <h4 class="text-maroon">📊 Your Grades</h4>
                         <hr>
                         @if (Model.Grades != null && Model.Grades.Any())
                         {
-                            <div class="table-responsive">
-                                <table class="table table-striped align-middle">
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <th>Subject</th>
-                                            <th>Q1</th>
-                                            <th>Q2</th>
-                                            <th>1st Sem</th>
-                                            <th>Q3</th>
-                                            <th>Q4</th>
-                                            <th>2nd Sem</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var grade in Model.Grades)
-                                        {
+                            <!-- First Semester Section -->
+                            <div class="mb-2">
+                                <h3 class="text-maroon mb-3 fs-4">First Semester</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-striped align-middle">
+                                        <thead class="table-dark">
                                             <tr>
-                                                <td>@grade.Subject</td>
-                                                <td>@grade.Quarter1</td>
-                                                <td>@grade.Quarter2</td>
-                                                <td class="fw-bold bg-light">@((grade.Quarter1 + grade.Quarter2) / 2.0)</td>
-                                                <td>@grade.Quarter3</td>
-                                                <td>@grade.Quarter4</td>
-                                                <td class="fw-bold bg-light">@((grade.Quarter3 + grade.Quarter4) / 2.0)</td>
+                                                <th>Subject</th>
+                                                <th>Subject Type</th>
+                                                <th>Q1</th>
+                                                <th>Q2</th>
+                                                <th>Final Grade</th>
+                                                <th>Teacher</th>
                                             </tr>
-                                        }
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var grade in Model.Grades.Where(g => g.Semester == SchoolManagementSystem.Models.SemesterType.First))
+                                            {
+                                                var firstSemFinal = (grade.Quarter1.HasValue && grade.Quarter2.HasValue) ? (grade.Quarter1 + grade.Quarter2) / 2.0 : (double?)null;
+                                                <tr>
+                                                    <td>@grade.Subject</td>
+                                                    <td>@grade.SubjectType</td>
+                                                    <td>@(grade.Quarter1?.ToString() ?? "N/A")</td>
+                                                    <td>@(grade.Quarter2?.ToString() ?? "N/A")</td>
+                                                    <td class="text-success fw-bold">@(firstSemFinal.HasValue ? firstSemFinal.Value.ToString("F2") : "N/A")</td>
+                                                    <td>@(grade.Teacher?.User != null ? $"{grade.Teacher.User.FirstName} {grade.Teacher.User.LastName}" : "Unknown")</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                        <tfoot>
+                                            @{
+                                                var firstSemGrades = Model.Grades
+                                                .Where(g => g.Semester == SchoolManagementSystem.Models.SemesterType.First)
+                                                .Select(g => (g.Quarter1.HasValue && g.Quarter2.HasValue) ? (g.Quarter1 + g.Quarter2) / 2.0 : (double?)null)
+                                                .Where(g => g.HasValue);
+                                                var firstSemAverage = firstSemGrades.Any() ? firstSemGrades.Average() : null;
+                                            }
+                                            <tr class="fw-bold">
+                                                <td colspan="4">General Average for the semester</td>
+                                                <td class="text-success">@(firstSemAverage.HasValue ? firstSemAverage.Value.ToString("F2") : "N/A")</td>
+                                                <td></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Second Semester Section -->
+                            <div class="mb-2">
+                                <h3 class="text-maroon mb-3 fs-4">Second Semester</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-striped align-middle fs-6">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th >Subject</th>
+                                                <th >Subject Type</th>
+                                                <th >Q3</th>
+                                                <th >Q4</th>
+                                                <th >Final Grade</th>
+                                                <th >Teacher</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var grade in Model.Grades.Where(g => g.Semester == SchoolManagementSystem.Models.SemesterType.Second))
+                                            {
+                                                var secondSemFinal = (grade.Quarter3.HasValue && grade.Quarter4.HasValue) ? (grade.Quarter3 + grade.Quarter4) / 2.0 : (double?)null;
+                                                <tr>
+                                                    <td>@grade.Subject</td>
+                                                    <td>@grade.SubjectType</td>
+                                                    <td>@(grade.Quarter3?.ToString() ?? "N/A")</td>
+                                                    <td>@(grade.Quarter4?.ToString() ?? "N/A")</td>
+                                                    <td class="text-success fw-bold">@(secondSemFinal.HasValue ? secondSemFinal.Value.ToString("F2") : "N/A")</td>
+                                                    <td>@(grade.Teacher?.User != null ? $"{grade.Teacher.User.FirstName} {grade.Teacher.User.LastName}" : "Unknown")</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                        <tfoot>
+                                            @{
+                                                var secondSemGrades = Model.Grades
+                                                .Where(g => g.Semester == SchoolManagementSystem.Models.SemesterType.Second)
+                                                .Select(g => (g.Quarter3.HasValue && g.Quarter4.HasValue) ? (g.Quarter3 + g.Quarter4) / 2.0 : (double?)null)
+                                                .Where(g => g.HasValue);
+                                                var secondSemAverage = secondSemGrades.Any() ? secondSemGrades.Average() : null;
+                                            }
+                                            <tr class="fw-bold">
+                                                <td colspan="4">General Average for the semester</td>
+                                                <td class="text-success">@(secondSemAverage.HasValue ? secondSemAverage.Value.ToString("F2") : "N/A")</td>
+                                                <td></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
                             </div>
                         }
                         else
