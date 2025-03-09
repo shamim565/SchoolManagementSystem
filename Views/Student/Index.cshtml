@@ -29,9 +29,16 @@
                     <div class="card shadow-sm p-3">
                         <h4 class="text-maroon">📊 Your Grades</h4>
                         <hr>
-                        @if (Model.Grades != null && Model.Grades.Any())
+                        <!-- First Semester Section -->
+                        @{
+                            var firstSemGrades = Model.Grades
+                            .Where(g => g.Semester == SchoolManagementSystem.Models.SemesterType.First)
+                            .Select(g => (g.Quarter1.HasValue && g.Quarter2.HasValue) ? (g.Quarter1 + g.Quarter2) / 2.0 : (double?)null)
+                            .Where(g => g.HasValue);
+
+                        }
+                        @if (firstSemGrades.Any())
                         {
-                            <!-- First Semester Section -->
                             <div class="mb-2">
                                 <h3 class="text-maroon mb-3 fs-4">First Semester</h3>
                                 <div class="table-responsive">
@@ -62,10 +69,6 @@
                                         </tbody>
                                         <tfoot>
                                             @{
-                                                var firstSemGrades = Model.Grades
-                                                .Where(g => g.Semester == SchoolManagementSystem.Models.SemesterType.First)
-                                                .Select(g => (g.Quarter1.HasValue && g.Quarter2.HasValue) ? (g.Quarter1 + g.Quarter2) / 2.0 : (double?)null)
-                                                .Where(g => g.HasValue);
                                                 var firstSemAverage = firstSemGrades.Any() ? firstSemGrades.Average() : null;
                                             }
                                             <tr class="fw-bold">
@@ -76,21 +79,30 @@
                                         </tfoot>
                                     </table>
                                 </div>
-                            </div>
+                            </div>        
+                        }
 
-                            <!-- Second Semester Section -->
+                        <!-- Second Semester Section -->
+                        @{
+                            var secondSemGrades = Model.Grades
+                            .Where(g => g.Semester == SchoolManagementSystem.Models.SemesterType.Second)
+                            .Select(g => (g.Quarter3.HasValue && g.Quarter4.HasValue) ? (g.Quarter3 + g.Quarter4) / 2.0 : (double?)null)
+                            .Where(g => g.HasValue);
+                        }
+                        @if (secondSemGrades.Any())
+                        {
                             <div class="mb-2">
                                 <h3 class="text-maroon mb-3 fs-4">Second Semester</h3>
                                 <div class="table-responsive">
                                     <table class="table table-striped align-middle fs-6">
                                         <thead class="table-dark">
                                             <tr>
-                                                <th >Subject</th>
-                                                <th >Subject Type</th>
-                                                <th >Q3</th>
-                                                <th >Q4</th>
-                                                <th >Final Grade</th>
-                                                <th >Teacher</th>
+                                                <th>Subject</th>
+                                                <th>Subject Type</th>
+                                                <th>Q3</th>
+                                                <th>Q4</th>
+                                                <th>Final Grade</th>
+                                                <th>Teacher</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -109,10 +121,6 @@
                                         </tbody>
                                         <tfoot>
                                             @{
-                                                var secondSemGrades = Model.Grades
-                                                .Where(g => g.Semester == SchoolManagementSystem.Models.SemesterType.Second)
-                                                .Select(g => (g.Quarter3.HasValue && g.Quarter4.HasValue) ? (g.Quarter3 + g.Quarter4) / 2.0 : (double?)null)
-                                                .Where(g => g.HasValue);
                                                 var secondSemAverage = secondSemGrades.Any() ? secondSemGrades.Average() : null;
                                             }
                                             <tr class="fw-bold">
@@ -125,7 +133,8 @@
                                 </div>
                             </div>
                         }
-                        else
+                            
+                        @if (!firstSemGrades.Any() && !secondSemGrades.Any())
                         {
                             <p class="text-muted">📌 No grades available yet.</p>
                         }
