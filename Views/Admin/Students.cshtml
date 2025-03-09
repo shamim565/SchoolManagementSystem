@@ -29,11 +29,7 @@
 
             <!-- Search Form -->
             <form method="get" asp-action="Students" class="mb-3 d-flex gap-2">
-                <input type="text" name="searchTerm" class="form-control" placeholder="Search by Email or LRN..." value="@Context.Request.Query["searchTerm"]">
-                <select name="searchType" class="form-select">
-                    <option value="email" selected="@(Context.Request.Query["searchType"] == "email")">Email</option>
-                    <option value="lrn" selected="@(Context.Request.Query["searchType"] == "lrn")">LRN</option>
-                </select>
+                <input type="text" name="searchTerm" class="form-control" placeholder="Search" value="@Context.Request.Query["searchTerm"]">
                 <select name="gradeFilter" class="form-select">
                     <option value="">All Grades</option>
                     <option value="11" selected="@(Context.Request.Query["gradeFilter"] == "11")">Grade 11</option>

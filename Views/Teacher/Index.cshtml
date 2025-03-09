@@ -29,7 +29,7 @@
                         <!-- Search & Filter Form -->
                         <form method="get" asp-action="Index" class="mb-3 d-flex gap-2">
                             <!-- Search Bar -->
-                            <input type="text" name="searchTerm" class="form-control" placeholder="Search by Email or LRN..." value="@Context.Request.Query["searchTerm"]">
+                            <input type="text" name="searchTerm" class="form-control" placeholder="Search" value="@Context.Request.Query["searchTerm"]">
 
                             <!-- Search Type Dropdown -->
                             <select name="searchType" class="form-select">

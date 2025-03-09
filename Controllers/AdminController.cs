@@ -26,7 +26,7 @@ namespace SchoolManagementSystem.Controllers
         }
 
 
-        public async Task<IActionResult> Students(string searchTerm, string searchType, string gradeFilter, string sortField, string sortOrder)
+        public async Task<IActionResult> Students(string searchTerm, string gradeFilter, string sortField, string sortOrder)
         {
             if (HttpContext.Session.GetString("UserType") != UserType.Administrator.ToString())
                 return RedirectToAction("Login", "User");
@@ -38,14 +38,14 @@ namespace SchoolManagementSystem.Controllers
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 searchTerm = searchTerm.Trim().ToLower();
-                if (searchType == "email")
-                {
-                    students = students.Where(s => s.User.Email.ToLower().Contains(searchTerm));
-                }
-                else if (searchType == "lrn")
-                {
-                    students = students.Where(s => s.LRN.ToLower().Contains(searchTerm));
-                }
+                students = students.Where(s =>
+                    s.User.Email.ToLower().Contains(searchTerm) ||
+                    s.LRN.ToLower().Contains(searchTerm) ||
+                    s.User.FirstName.ToLower().Contains(searchTerm) ||
+                    s.User.LastName.ToLower().Contains(searchTerm) ||
+                    s.Track.ToLower().Contains(searchTerm) ||
+                    s.Section.ToLower().Contains(searchTerm)
+                );
             }
 
             // Grade Filtering
