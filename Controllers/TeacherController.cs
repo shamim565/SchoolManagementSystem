@@ -14,7 +14,7 @@ namespace SchoolManagementSystem.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string searchTerm, string searchType, string gradeFilter, string sortField, string sortOrder)
+        public async Task<IActionResult> Index(string searchTerm, string gradeFilter, string sortField, string sortOrder)
         {
             if (HttpContext.Session.GetString("UserType") != UserType.Teacher.ToString())
                 return RedirectToAction("Login", "User");
@@ -34,18 +34,17 @@ namespace SchoolManagementSystem.Controllers
                 .Where(s => s.Grades.Any(g => g.TeacherId == teacher.Id))
                 .AsQueryable();
 
-            // Search Filtering
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 searchTerm = searchTerm.Trim().ToLower();
-                if (searchType == "email")
-                {
-                    students = students.Where(s => s.User.Email.ToLower().Contains(searchTerm));
-                }
-                else if (searchType == "lrn")
-                {
-                    students = students.Where(s => s.LRN.ToLower().Contains(searchTerm));
-                }
+                students = students.Where(s =>
+                    s.User.Email.ToLower().Contains(searchTerm) ||
+                    s.LRN.ToLower().Contains(searchTerm) ||
+                    s.User.FirstName.ToLower().Contains(searchTerm) ||
+                    s.User.LastName.ToLower().Contains(searchTerm) ||
+                    s.Track.ToLower().Contains(searchTerm) ||
+                    s.Section.ToLower().Contains(searchTerm)
+                );
             }
 
             // Grade Filtering

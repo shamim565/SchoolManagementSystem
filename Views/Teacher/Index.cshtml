@@ -31,12 +31,6 @@
                             <!-- Search Bar -->
                             <input type="text" name="searchTerm" class="form-control" placeholder="Search" value="@Context.Request.Query["searchTerm"]">
 
-                            <!-- Search Type Dropdown -->
-                            <select name="searchType" class="form-select">
-                                <option value="email" selected="@(Context.Request.Query["searchType"] == "email")">Email</option>
-                                <option value="lrn" selected="@(Context.Request.Query["searchType"] == "lrn")">LRN</option>
-                            </select>
-
                             <!-- Grade Filter Dropdown -->
                             <select name="gradeFilter" class="form-select">
                                 <option value="">All Grades</option>
