@@ -55,16 +55,39 @@ body {
     white-space: nowrap;
 }
 
+.bg-trademark {
+    background: linear-gradient(rgba(255, 255, 255, 0.80), rgba(255, 255, 255, 0.80)), url('https://raw.githubusercontent.com/CharieDelRosario/smsat/refs/heads/main/LogoSMSAT.jpg') no-repeat center;
+    background-size: 45%;
+}
+
+/* Transparent input fields */
+#Login .form-control {
+    background-color: transparent;
+    border: 1px solid rgba(128, 0, 0, 0.5);
+    color: #800000;
+}
+
+#Login .form-control::placeholder {
+    color: rgba(128, 0, 0, 0.7);
+}
+
+#Login .form-control:focus {
+    background-color: transparent;
+    border: 1px solid #800000;
+    box-shadow: 0 0 10px rgba(128, 0, 0, 0.4);
+}
+
 @media (max-width: 576px) {
     .btn-lg {
-        font-size: 1rem; /* Slightly smaller button text on mobile */
+        font-size: 1rem;
     }
 
     .form-control, .form-select {
-        font-size: 0.9rem; /* Smaller input text on mobile */
+        font-size: 0.9rem;
     }
 
     .card {
-        margin: 0 0.5rem; /* Add slight side margins on mobile */
+        margin: 0 0.5rem;
     }
 }
+

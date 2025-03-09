@@ -29,7 +29,7 @@
 
             <!-- Search Form -->
             <form method="get" asp-action="Teachers" class="mb-3 d-flex gap-2">
-                <input type="text" name="searchTerm" class="form-control" placeholder="Search teachers by name or email or subject or advisory class or position..." value="@Context.Request.Query["searchTerm"]">
+                <input type="text" name="searchTerm" class="form-control" placeholder="Search" value="@Context.Request.Query["searchTerm"]">
                 <button type="submit" class="btn btn-secondary wrap-none">🔍 Search</button>
                 <a asp-action="Teachers" class="btn btn-secondary wrap-none">🔄 Reset</a>
             </form>
