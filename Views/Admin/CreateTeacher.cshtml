@@ -22,13 +22,23 @@
 
                     <div class="col-md-6">
                         <label asp-for="User.Password" class="form-label fw-bold"></label>
-                        <input asp-for="User.Password" type="password" class="form-control border-primary" />
+                        <div class="input-group">
+                            <input asp-for="User.Password" type="password" class="form-control border-primary" id="passwordField" />
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                👁️
+                            </button>
+                        </div>
                         <span asp-validation-for="User.Password" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6">
                         <label for="ConfirmPassword" class="form-label fw-bold">Confirm Password</label>
-                        <input id="ConfirmPassword" type="password" class="form-control border-primary" />
+                        <div class="input-group">
+                            <input id="ConfirmPassword" type="password" class="form-control border-primary" />
+                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                                👁️
+                            </button>
+                        </div>
                         <span id="ConfirmPasswordError" class="text-danger"></span>
                     </div>
 
@@ -102,9 +112,32 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const passwordField = document.querySelector('input[name="User.Password"]');
+            const passwordField = document.getElementById('passwordField');
             const confirmPasswordField = document.getElementById('ConfirmPassword');
             const errorElement = document.getElementById('ConfirmPasswordError');
+            const togglePassword = document.getElementById('togglePassword');
+            const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+
+
+            togglePassword.addEventListener('click', function () {
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    togglePassword.innerHTML = '❌';
+                } else {
+                    passwordField.type = 'password';
+                    togglePassword.innerHTML = '👁️';
+                }
+            });
+
+            toggleConfirmPassword.addEventListener('click', function () {
+                if (confirmPasswordField.type === 'password') {
+                    confirmPasswordField.type = 'text';
+                    toggleConfirmPassword.innerHTML = '❌';
+                } else {
+                    confirmPasswordField.type = 'password';
+                    toggleConfirmPassword.innerHTML = '👁️';
+                }
+            });
 
             confirmPasswordField.addEventListener('input', function () {
                 // Check if passwords match
