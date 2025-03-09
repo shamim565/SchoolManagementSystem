@@ -482,7 +482,8 @@ namespace SchoolManagementSystem.Controllers
             {
                 GradeReportService gradeReportService = new GradeReportService();
                 var pdfBytes = gradeReportService.GenerateGradeReportPdf(studentId, _context);
-                return File(pdfBytes, "application/pdf", $"GradeReport_{_context.Students.First(s => s.Id == studentId).User.FirstName}_{studentId}.pdf");
+                var student = _context.Students.First(s => s.Id == studentId);
+                return File(pdfBytes, "application/pdf", $"GradeReport_{student?.User?.FirstName}_{student?.LRN}.pdf");
             }
             catch (Exception ex)
             {

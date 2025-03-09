@@ -46,9 +46,9 @@ namespace SchoolManagementSystem.Services
             </head>
             <body>
                 <div class='school-header'>
-                    <h1>School Name High School</h1>
-                    <p>123 Education Lane, Knowledge City, EduState 12345</p>
-                    <p>Contact: (123) 456-7890 | Email: info@schoolnamehs.edu</p>
+                    <h1>Sanchez Mira School of Arts and Trades</h1>
+                    <p>Maharlika North Road, Brgy. Santor, Sanchez Mira 3518 Cagayan</p>
+                    <p>Contact: (078) 304-0073 | Email: 300486@deped.gov.ph</p>
                 </div>
                 <div class='report-info'>
                     <p>Generated on: " + DateTime.Now.ToString("MMMM dd, yyyy hh:mm tt") + @"</p>
@@ -69,7 +69,7 @@ namespace SchoolManagementSystem.Services
                             <th>Quarter 1</th>
                             <th>Quarter 2</th>
                             <th>Final Grade</th>
-                            <th>Teacher</th>
+                            <!--<th>Teacher</th>-->
                         </tr>
                     </thead>
                     <tbody>");
@@ -87,7 +87,7 @@ namespace SchoolManagementSystem.Services
                             <td>{grade.Quarter1?.ToString() ?? "N/A"}</td>
                             <td>{grade.Quarter2?.ToString() ?? "N/A"}</td>
                             <td class='text-success'>{(finalGrade.HasValue ? finalGrade.Value.ToString("F2") : "N/A")}</td>
-                            <td>{(grade.Teacher?.User != null ? $"{grade.Teacher.User.FirstName} {grade.Teacher.User.LastName}" : "Unknown")}</td>
+                            <!--<td>{(grade.Teacher?.User != null ? $"{grade.Teacher.User.FirstName} {grade.Teacher.User.LastName}" : "Unknown")}</td>-->
                         </tr>");
                 }
             }
@@ -109,7 +109,7 @@ namespace SchoolManagementSystem.Services
                         <tr>
                             <td colspan='4'>General Average for the semester</td>
                             <td class='text-success'>{(firstSemAverage.HasValue ? firstSemAverage.Value.ToString("F2") : "N/A")}</td>
-                            <td></td>
+                            <!--<td></td>-->
                         </tr>
                     </tfoot>
                 </table>
@@ -130,7 +130,7 @@ namespace SchoolManagementSystem.Services
                             <th>Quarter 3</th>
                             <th>Quarter 4</th>
                             <th>Final Grade</th>
-                            <th>Teacher</th>
+                            <!--<th>Teacher</th>-->
                         </tr>
                     </thead>
                     <tbody>");
@@ -148,7 +148,7 @@ namespace SchoolManagementSystem.Services
                             <td>{grade.Quarter3?.ToString() ?? "N/A"}</td>
                             <td>{grade.Quarter4?.ToString() ?? "N/A"}</td>
                             <td class='text-success'>{(finalGrade.HasValue ? finalGrade.Value.ToString("F2") : "N/A")}</td>
-                            <td>{(grade.Teacher?.User != null ? $"{grade.Teacher.User.FirstName} {grade.Teacher.User.LastName}" : "Unknown")}</td>
+                           <!-- <td>{(grade.Teacher?.User != null ? $"{grade.Teacher.User.FirstName} {grade.Teacher.User.LastName}" : "Unknown")}</td> -->
                         </tr>");
                 }
             }
@@ -170,7 +170,7 @@ namespace SchoolManagementSystem.Services
                         <tr>
                             <td colspan='4'>General Average for the semester</td>
                             <td class='text-success'>{(secondSemAverage.HasValue ? secondSemAverage.Value.ToString("F2") : "N/A")}</td>
-                            <td></td>
+                            <!--<td></td>-->
                         </tr>
                     </tfoot>
                 </table>
