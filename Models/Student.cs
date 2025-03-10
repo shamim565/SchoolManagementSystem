@@ -8,6 +8,7 @@ namespace SchoolManagementSystem.Models
         public int Id { get; set; }
 
         [Required]
+        [StringLength(13, MinimumLength = 13, ErrorMessage = "LRN must be 13 characters long.")]
         public string LRN { get; set; }
 
         [Required]

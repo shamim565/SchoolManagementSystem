@@ -47,7 +47,7 @@
                         <tbody>
                             @foreach (var grade in Model.Where(g => g.Semester == SchoolManagementSystem.Models.SemesterType.First))
                             {
-                                var firstSemFinal = (grade.Quarter1 + grade.Quarter2) / 2.0;
+                                var firstSemFinal = (int)Math.Round((grade.Quarter1 + grade.Quarter2).Value / 2.0, MidpointRounding.AwayFromZero);
 
                                 <tr>
                                     <td>@grade.Subject</td>
@@ -72,13 +72,13 @@
                                 var firstSemGrades = Model.Where(g => g.Semester == SchoolManagementSystem.Models.SemesterType.First)
                                 .Select(g => (g.Quarter1.HasValue && g.Quarter2.HasValue) ? (g.Quarter1 + g.Quarter2) / 2.0 : (double?)null)
                                 .Where(g => g.HasValue);
-                                var firstSemAverage = firstSemGrades.Any() ? firstSemGrades.Average() : null;
+                                var firstSemAverage = firstSemGrades.Any() ? (int)Math.Round(firstSemGrades.Average().Value, MidpointRounding.AwayFromZero) : (int?)null;
                             }
                             @if(firstSemGrades.Any())
                             {
                                 <tr>
                                     <td colspan="4" class="fw-bold">General Average for the semester</td>
-                                    <td class="text-success fw-bold">@(firstSemAverage.HasValue ? firstSemAverage.Value.ToString("F2") : "N/A")</td>
+                                    <td class="text-success fw-bold">@(firstSemAverage.HasValue ? firstSemAverage.Value.ToString() : "N/A")</td>
                                     <td colspan="2"></td>
                                 </tr>
                             }
@@ -106,7 +106,7 @@
                         <tbody>
                             @foreach (var grade in Model.Where(g => g.Semester == SchoolManagementSystem.Models.SemesterType.Second))
                             {
-                                var secondSemFinal = (grade.Quarter3 + grade.Quarter4) / 2.0;
+                                var secondSemFinal = (int)Math.Round((grade.Quarter3 + grade.Quarter4).Value / 2.0, MidpointRounding.AwayFromZero);
 
                                 <tr>
                                     <td>@grade.Subject</td>
@@ -131,13 +131,13 @@
                                 var secondSemGrades = Model.Where(g => g.Semester == SchoolManagementSystem.Models.SemesterType.Second)
                                 .Select(g => (g.Quarter3.HasValue && g.Quarter4.HasValue) ? (g.Quarter3 + g.Quarter4) / 2.0 : (double?)null)
                                 .Where(g => g.HasValue);
-                                var secondSemAverage = secondSemGrades.Any() ? secondSemGrades.Average() : null;
+                                var secondSemAverage = secondSemGrades.Any() ? (int)Math.Round(secondSemGrades.Average().Value,  MidpointRounding.AwayFromZero) : (int?)null;
                             }
                             @if(secondSemGrades.Any())
                             {
                                 <tr>
                                     <td colspan="4" class="fw-bold">General Average for the semester</td>
-                                    <td class="text-success fw-bold">@(secondSemAverage.HasValue ? secondSemAverage.Value.ToString("F2") : "N/A")</td>
+                                    <td class="text-success fw-bold">@(secondSemAverage.HasValue ? secondSemAverage.Value.ToString() : "N/A")</td>
                                     <td colspan="2"></td>
                                 </tr>
                             }
