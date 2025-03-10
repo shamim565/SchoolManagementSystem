@@ -24,7 +24,7 @@ namespace SchoolManagementSystem.Models
         public string Section { get; set; }
 
         [Required]
-        public int UserId { get; set; } // Foreign key to User.Id
+        public int UserId { get; set; } 
 
         public List<Grade>? Grades { get; set; }
         public User? User { get; set; }
