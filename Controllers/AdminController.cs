@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Data;
 using SchoolManagementSystem.Models;
 using SchoolManagementSystem.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 
 namespace SchoolManagementSystem.Controllers
@@ -71,7 +72,6 @@ namespace SchoolManagementSystem.Controllers
 
             ViewBag.SortField = sortField;
             ViewBag.SortOrder = sortOrder == "asc" ? "desc" : "asc";
-            //ViewBag.Students = await students.ToListAsync();
 
             return View(await students.ToListAsync());
         }
@@ -114,7 +114,7 @@ namespace SchoolManagementSystem.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "An error occurred while saving the data. Please try again.");
+                ModelState.AddModelError("", ex.Message);
             }
 
             return View();
@@ -167,6 +167,7 @@ namespace SchoolManagementSystem.Controllers
                     existingStudent.User.Email = student.User.Email;
 
                     // Update Student details
+                    existingStudent.LRN = student.LRN;
                     existingStudent.Grade = student.Grade;
                     existingStudent.Year = student.Year;
                     existingStudent.Track = student.Track;
@@ -180,7 +181,7 @@ namespace SchoolManagementSystem.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "An error occurred while updating the student.");
+                    ModelState.AddModelError("", ex.Message);
                 }
             }
             else
@@ -289,7 +290,7 @@ namespace SchoolManagementSystem.Controllers
             catch (Exception ex)
             {
                 // Log the exception (e.g., using a logging framework)
-                ModelState.AddModelError("", "An error occurred while saving the data. Please try again.");
+                ModelState.AddModelError("", ex.Message);
             }
             return View(teacher);
         }
@@ -369,7 +370,7 @@ namespace SchoolManagementSystem.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "An error occurred while deleting the teacher.";
+                TempData["ErrorMessage"] = ex.Message;
             }
             return RedirectToAction("Teachers");
         }
@@ -398,7 +399,7 @@ namespace SchoolManagementSystem.Controllers
             }
 
             ViewBag.StudentId = studentId;
-            ViewBag.Teachers = _context.Teachers.Include(t => t.User).ToList(); // Ensure User is included
+            ViewBag.Teachers = _context.Teachers.Include(t => t.User).ToList(); 
 
             return View();
         }
