@@ -79,14 +79,14 @@ namespace SchoolManagementSystem.Services
             {
                 foreach (var grade in firstSemesterGrades)
                 {
-                    var finalGrade = (grade.Quarter1.HasValue && grade.Quarter2.HasValue) ? (grade.Quarter1 + grade.Quarter2) / 2.0 : null;
+                    var finalGrade = (grade.Quarter1.HasValue && grade.Quarter2.HasValue) ? (int)Math.Round((grade.Quarter1 + grade.Quarter2).Value / 2.0, MidpointRounding.AwayFromZero) : (int?)null;
                     htmlContent.Append($@"
                         <tr>
                             <td>{grade.Subject}</td>
                             <td>{grade.SubjectType}</td>
                             <td>{grade.Quarter1?.ToString() ?? "N/A"}</td>
                             <td>{grade.Quarter2?.ToString() ?? "N/A"}</td>
-                            <td class='text-success'>{(finalGrade.HasValue ? finalGrade.Value.ToString("F2") : "N/A")}</td>
+                            <td class='text-success'>{(finalGrade.HasValue ? finalGrade.Value.ToString() : "N/A")}</td>
                             <!--<td>{(grade.Teacher?.User != null ? $"{grade.Teacher.User.FirstName} {grade.Teacher.User.LastName}" : "Unknown")}</td>-->
                         </tr>");
                 }
@@ -100,15 +100,16 @@ namespace SchoolManagementSystem.Services
                 .Select(g => (g.Quarter1.HasValue && g.Quarter2.HasValue) ? (g.Quarter1 + g.Quarter2) / 2.0 : (double?)null)
                 .Where(g => g.HasValue)
                 .Average();
+            firstSemAverage = firstSemAverage.HasValue? (int)Math.Round(firstSemAverage.Value, MidpointRounding.AwayFromZero) : (int?)null;
 
-            if(firstSemesterGrades.Any())
+            if (firstSemesterGrades.Any())
             {
                 htmlContent.Append($@"
                     </tbody>
                     <tfoot>
                         <tr>
                             <td colspan='4'>General Average for the semester</td>
-                            <td class='text-success'>{(firstSemAverage.HasValue ? firstSemAverage.Value.ToString("F2") : "N/A")}</td>
+                            <td class='text-success'>{(firstSemAverage.HasValue ? firstSemAverage.Value.ToString() : "N/A")}</td>
                             <!--<td></td>-->
                         </tr>
                     </tfoot>
@@ -140,14 +141,14 @@ namespace SchoolManagementSystem.Services
             {
                 foreach (var grade in secondSemesterGrades)
                 {
-                    var finalGrade = (grade.Quarter3.HasValue && grade.Quarter4.HasValue) ? (grade.Quarter3 + grade.Quarter4) / 2.0 : null;
+                    var finalGrade = (grade.Quarter3.HasValue && grade.Quarter4.HasValue) ? (int)Math.Round((grade.Quarter3 + grade.Quarter4).Value / 2.0, MidpointRounding.AwayFromZero) : (int?)null;
                     htmlContent.Append($@"
                         <tr>
                             <td>{grade.Subject}</td>
                             <td>{grade.SubjectType}</td>
                             <td>{grade.Quarter3?.ToString() ?? "N/A"}</td>
                             <td>{grade.Quarter4?.ToString() ?? "N/A"}</td>
-                            <td class='text-success'>{(finalGrade.HasValue ? finalGrade.Value.ToString("F2") : "N/A")}</td>
+                            <td class='text-success'>{(finalGrade.HasValue ? finalGrade.Value.ToString() : "N/A")}</td>
                            <!-- <td>{(grade.Teacher?.User != null ? $"{grade.Teacher.User.FirstName} {grade.Teacher.User.LastName}" : "Unknown")}</td> -->
                         </tr>");
                 }
@@ -162,6 +163,8 @@ namespace SchoolManagementSystem.Services
                 .Where(g => g.HasValue)
                 .Average();
 
+            secondSemAverage = secondSemAverage.HasValue? (int)Math.Round(secondSemAverage.Value, MidpointRounding.AwayFromZero) : (int?)null;
+
             if (secondSemesterGrades.Any())
             {
                 htmlContent.Append($@"
@@ -169,7 +172,7 @@ namespace SchoolManagementSystem.Services
                     <tfoot>
                         <tr>
                             <td colspan='4'>General Average for the semester</td>
-                            <td class='text-success'>{(secondSemAverage.HasValue ? secondSemAverage.Value.ToString("F2") : "N/A")}</td>
+                            <td class='text-success'>{(secondSemAverage.HasValue ? secondSemAverage.Value.ToString() : "N/A")}</td>
                             <!--<td></td>-->
                         </tr>
                     </tfoot>

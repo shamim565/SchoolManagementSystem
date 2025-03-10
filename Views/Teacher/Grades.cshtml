@@ -138,8 +138,8 @@
 
             <div class="d-flex justify-content-end">
                 @if ((firstSemGrades.Any() && firstSemAverage.HasValue) || (secondSemGrades.Any() && secondSemAverage.HasValue))
-                { 
-                     <a asp-action="DownloadGrade" asp-route-studentId="@studentId" class="btn btn-light text-maroon fw-bold">📄 Download Grade Sheet</a>
+                {
+                    <a asp-controller="Admin" asp-action="DownloadGrade" asp-route-studentId="@studentId" class="btn btn-light text-maroon fw-bold">📄 Download Grade Sheet</a>
                  } 
 
                 <a asp-action="Index" asp-controller="Teacher" class="btn btn-secondary ms-2">🏠 Back to Dashboard</a>
