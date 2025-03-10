@@ -7,6 +7,20 @@
                 <div class="card-header bg-maroon text-white text-center">
                     <h3 class="mb-0">Edit Grade</h3>
                 </div>
+                @{
+                    bool isFirstSem = false;
+                    bool isSecondSem = false;
+                    if(Model.Semester == SchoolManagementSystem.Models.SemesterType.First)
+                    {
+                        isFirstSem = true;
+                    }
+                    else if(Model.Semester == SchoolManagementSystem.Models.SemesterType.Second)
+                    {
+                        isSecondSem = true;
+                    }
+                }
+                
+
                 <div class="card-body">
                     <form asp-action="EditGrade" method="post">
                         <div asp-validation-summary="All" class="text-danger"></div>
@@ -23,7 +37,7 @@
                             </p>
                         </div>
 
-                        <div class="row">
+                        <div class="row @(!isFirstSem? "d-none": "")">
                             <div class="col-md-6 mb-3">
                                 <label asp-for="Quarter1" class="form-label fw-bold">Q1 Grade</label>
                                 <input asp-for="Quarter1" class="form-control" type="number" step="0.01" placeholder="Q1 Grade" />
@@ -36,7 +50,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row @(!isSecondSem? "d-none": "")">
                             <div class="col-md-6 mb-3">
                                 <label asp-for="Quarter3" class="form-label fw-bold">Q3 Grade</label>
                                 <input asp-for="Quarter3" class="form-control" type="number" step="0.01" placeholder="Q3 Grade" />

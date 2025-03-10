@@ -47,7 +47,7 @@
                         <tbody>
                             @foreach (var grade in Model.Where(g => g.Semester == SchoolManagementSystem.Models.SemesterType.First))
                             {
-                                var firstSemFinal = (int)Math.Round((grade.Quarter1 + grade.Quarter2).Value / 2.0, MidpointRounding.AwayFromZero);
+                                var firstSemFinal = (grade.Quarter1.HasValue && grade.Quarter2.HasValue) ? (int)Math.Round((grade.Quarter1 + grade.Quarter2).Value / 2.0, MidpointRounding.AwayFromZero) : (int?)null;
 
                                 <tr>
                                     <td>@grade.Subject</td>
@@ -106,7 +106,7 @@
                         <tbody>
                             @foreach (var grade in Model.Where(g => g.Semester == SchoolManagementSystem.Models.SemesterType.Second))
                             {
-                                var secondSemFinal = (int)Math.Round((grade.Quarter3 + grade.Quarter4).Value / 2.0, MidpointRounding.AwayFromZero);
+                                var secondSemFinal = (grade.Quarter3.HasValue && grade.Quarter4.HasValue) ? (int)Math.Round((grade.Quarter3 + grade.Quarter4).Value / 2.0, MidpointRounding.AwayFromZero) : (int?)null;
 
                                 <tr>
                                     <td>@grade.Subject</td>
@@ -147,7 +147,8 @@
             </div>
 
             <div class="d-flex justify-content-end">
-                @if(Model.Any()){
+                @if ((firstSemGrades.Any() && firstSemAverage.HasValue) || (secondSemGrades.Any() && secondSemAverage.HasValue))
+                {
                     <a asp-action="DownloadGrade" asp-route-studentId="@studentId" class="btn btn-light text-maroon fw-bold">📄 Download Grade Sheet</a>
                 }
                 <a asp-action="Students" class="btn btn-secondary ms-2">🏠 Back to Students</a>
